@@ -56,6 +56,27 @@ export const constantRoutes = [
   },
 
   {
+    path: '/teacher',
+    component: Layout,
+    redirect: '/teacher/list',
+    name: 'teacher',
+    meta: { title: '讲师管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/teacher/list'),
+        meta: { title: '讲师列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/teacher/add'),
+        meta: { title: '添加讲师', icon: 'tree' }
+      }
+    ]
+  },
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
