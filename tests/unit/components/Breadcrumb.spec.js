@@ -13,12 +13,12 @@ const routes = [
     name: 'home',
     children: [{
       path: 'dashboard',
-      name: 'dashboard'
+      name: '仪表盘'
     }]
   },
   {
     path: '/menu',
-    name: 'menu',
+    name: '菜单',
     children: [{
       path: 'menu1',
       name: 'menu1',
