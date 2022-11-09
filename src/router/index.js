@@ -73,6 +73,13 @@ export const constantRoutes = [
         name: 'add',
         component: () => import('@/views/teacher/add'),
         meta: { title: '添加讲师', icon: 'tree' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        component: () => import('@/views/teacher/add'),
+        meta: { title: '修改讲师', icon: 'tree' },
+        hidden: true
       }
     ]
   },

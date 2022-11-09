@@ -2,21 +2,9 @@
 
 English | [简体中文](./README-zh.md)
 
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
-
-**Live demo:** http://panjiachen.github.io/vue-admin-template
 
 
 **The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
-
-<p align="center">
-  <b>SPONSORED BY</b>
-</p>
-<p align="center">
-   <a href="https://finclip.com?from=vue_element" title="FinClip" target="_blank">
-      <img height="200px" src="https://gitee.com/panjiachen/gitee-cdn/raw/master/vue%E8%B5%9E%E5%8A%A9.png" title="FinClip">
-   </a>
-</p>
 
 ## Build Setup
 
@@ -92,8 +80,44 @@ Modern browsers and Internet Explorer 10+.
 | --------- | --------- | --------- | --------- |
 | IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
 
-## License
+## nginx配置
+```nginx
+server {
+   listen  9001;  # 监听端口号
+        server_name  localhost;    
+		# -- 谷粒商城 ---
+    location ~ /edu_oss/ {
+        # 转发服务器地址
+        proxy_pass http://localhost:8887;
+    }
 
+    location ~ /edu_service/ {
+        # 转发服务器地址
+        proxy_pass http://localhost:8888; 
+    }
+    # -- 谷粒商城 ---
+    ...
+}
+```
+#### nginx常用命令(macOS)
+[参考地址](https://blog.csdn.net/Wjhsmart/article/details/115739192)
+```bash
+使用brew安装nginx
+brew install nginx
+启动nginx服务
+brew services start nginx 
+重启的命令是: 
+brew services restart nginx
+nginx的配置文件路径：
+/usr/local/etc/nginx/nginx.conf
+nginx的服务器默认路径：
+/usr/local/var/www
+nginx的安装路径：
+/usr/local/Cellar/nginx
+```
+
+
+## License
 [MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
 
 Copyright (c) 2017-present PanJiaChen

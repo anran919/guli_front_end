@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 export function getPageList(params) {
-  // const { page, limit } = params
+  const { pageNo, pageSize } = params
   return request({
-    url: `/edu_service/edu_teacher/getTeacherList`,
+    url: `/edu_service/edu_teacher/getList/${pageNo}/${pageSize}`,
     method: 'GET',
     params
   })
@@ -14,5 +14,27 @@ export function addTeacher(data) {
     url: '/edu_service/edu_teacher/add',
     method: 'POST',
     data
+  })
+}
+
+export function deleteTeacherById(id) {
+  return request({
+    url: `/edu_service/edu_teacher/${id}`,
+    method: 'DELETE'
+  })
+}
+
+export function updateTeacher(id, data) {
+  return request({
+    url: `/edu_service/edu_teacher/${id}`,
+    method: 'PUT',
+    data
+  })
+}
+
+export function getTeacherById(id) {
+  return request({
+    url: `/edu_service/edu_teacher/${id}`,
+    method: 'GET'
   })
 }
