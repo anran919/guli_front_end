@@ -91,7 +91,7 @@ server {
         proxy_pass http://localhost:8887;
     }
 
-    location ~ /edu_service/ {
+    location ~ /service_edu/ {
         # 转发服务器地址
         proxy_pass http://localhost:8888; 
     }

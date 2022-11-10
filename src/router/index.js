@@ -54,7 +54,6 @@ export const constantRoutes = [
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/teacher',
     component: Layout,
@@ -80,6 +79,27 @@ export const constantRoutes = [
         component: () => import('@/views/teacher/add'),
         meta: { title: '修改讲师', icon: 'tree' },
         hidden: true
+      }
+    ]
+  },
+  {
+    path: '/subject',
+    component: Layout,
+    redirect: '/subject/list',
+    name: 'subject',
+    meta: { title: '课程管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/subject/list'),
+        meta: { title: '课程列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/subject/add'),
+        meta: { title: '添加课程', icon: 'tree' }
       }
     ]
   },
