@@ -59,7 +59,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/teacher/list',
     name: 'teacher',
-    meta: { title: '讲师管理', icon: 'el-icon-s-help' },
+    meta: { title: '讲师管理', icon: 'el-icon-magic-stick' },
     children: [
       {
         path: 'list',
@@ -87,44 +87,64 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/subject/list',
     name: 'subject',
-    meta: { title: '课程管理', icon: 'el-icon-s-help' },
+    meta: { title: '课程分类管理', icon: 'el-icon-collection' },
     children: [
       {
         path: 'list',
         name: 'list',
         component: () => import('@/views/subject/list'),
-        meta: { title: '课程列表', icon: 'table' }
+        meta: { title: '分类列表', icon: 'tree' }
       },
       {
         path: 'add',
         name: 'add',
         component: () => import('@/views/subject/add'),
-        meta: { title: '添加课程', icon: 'tree' }
+        meta: { title: '添加分类', icon: 'table' }
       }
     ]
   },
   {
-    path: '/example',
+    path: '/course',
     component: Layout,
-    redirect: '/example/table',
-    name: 'example',
-    meta: { title: '示例', icon: 'el-icon-s-help' },
+    redirect: '/course/list',
+    name: 'course',
+    meta: { title: '课程管理', icon: 'el-icon-reading' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '表格', icon: 'table' }
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/course/list'),
+        meta: { title: '课程列表', icon: 'form' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '树形表格', icon: 'tree' }
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/course/add'),
+        meta: { title: '发布课程', icon: 'form', keepAlive: true }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        component: () => import('@/views/course/add'),
+        meta: { title: '编辑课程基本信息', icon: 'form' },
+        hidden: true
+      },
+      {
+        path: 'chapter/:id',
+        name: 'chapter',
+        component: () => import('@/views/course/chapter'),
+        meta: { title: '编辑课程大纲', icon: 'form' },
+        hidden: true
+      },
+      {
+        path: 'publish/:id',
+        name: 'chapter',
+        component: () => import('@/views/course/publish'),
+        meta: { title: '发布课程', icon: 'form' },
+        hidden: true
       }
     ]
   },
-
   {
     path: '/form',
     component: Layout,
@@ -137,7 +157,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/nested',
     component: Layout,

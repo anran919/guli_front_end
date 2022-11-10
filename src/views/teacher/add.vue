@@ -42,7 +42,7 @@
           :width="300"
           :height="300"
           field="file"
-          :url="BASE_URL+'/edu_oss/file_oss/upload'"
+          :url="uploadAvatar"
           @close="close"
           @crop-upload-success="cropSuccess"
         />
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { addTeacher, getTeacherById, updateTeacher } from '@/api/teacher'
+import { addTeacher, getTeacherById, updateTeacher, uploadAvatar } from '@/api/teacher'
 import ImageCropper from '@/components/ImageCropper'
 import PanThumb from '@/components/PanThumb'
 export default {
@@ -69,7 +69,7 @@ export default {
       confirmLoading: false,
       avatarCropperVisible: false,
       imageKey: 1,
-      BASE_URL: process.env.VUE_APP_BASE_API
+      uploadAvatar
     }
   },
   created() {

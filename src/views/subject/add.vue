@@ -9,15 +9,13 @@
             <a href="/excel/课程数据.xlsx">点击下载模版</a>
           </el-tag>
         </el-form-item>
-        <!--  :action="BASE_API+'/service_edu/edu-subject/uploadFile'" -->
-        <!-- action="http://localhost:9001/service_edu/edu-subject/uploadFile" -->
-        <!-- http://localhost:9001/service_edu/edu-subject/uploadFile -->
+        <!-- :action="BASE_API+'/service_edu/edu-subject/uploadFile'" -->
         <el-form-item label="选择Excel">
           <el-upload
             ref="upload"
             :auto-upload="false"
             class="upload"
-            :action="BASE_API+'/service_edu/edu-subject/uploadFile'"
+            :action="uploadAction"
             :on-success="onFileUploadSuccess"
             :on-error="onFileUploadError"
             accept=".xlsx,xls"
@@ -37,11 +35,13 @@
 </template>
 
 <script>
+import { uploadFile } from '@/api/subject'
 export default {
 
   data() {
     return {
       fileList: [],
+      uploadAction: uploadFile,
       BASE_API: process.env.VUE_APP_BASE_API,
       uploadLoading: false
     }
@@ -50,11 +50,11 @@ export default {
     submitUpload() {
       this.uploadLoading = true
       this.$refs.upload.submit()
-      this.uploadLoading = false
     },
     onFileUploadSuccess(response, file, fileList) {
       this.uploadLoading = false
       this.$message.success('上传成功!')
+      this.$router.push({ path: '/subject/list' })
     },
     onFileUploadError(err) {
       this.uploadLoading = false
