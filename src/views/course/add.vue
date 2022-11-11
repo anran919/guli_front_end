@@ -25,11 +25,14 @@
         <el-form-item label="总课时">
           <el-input-number v-model="form.lessonNum" controls-position="right" :min="0" placeholder="总课时" />
         </el-form-item>
-        <!--TODO 课程简介 -->
+        <!--课程简介使用 quill-editor -->
+        <!-- <el-form-item label="课程简介">
+            <quill-editor ref="text" v-model="form.description" class="myQuillEditor" :options="editorOption" />
+        </el-form-item> -->
+        <!--课程简介使用 tinymce -->
         <el-form-item label="课程简介">
-          <el-input v-model="form.description" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="课程简介" />
+          <tinymce-editer v-model="form.description" />
         </el-form-item>
-        <!--TODO 课程封面 -->
         <el-form-item label="课程封面">
           <el-upload
             class="avatar-uploader"
@@ -55,22 +58,26 @@
 </template>
 
 <script>
-import { add, uploadCover } from '@/api/course'
+import { add, uploadCover, updateCourse, getCourseById } from '@/api/course'
 import { getAllTeacherList } from '@/api/teacher'
+import TinymceEditer from '@/components/TinymceEditer'
 import { getTreeList } from '@/api/subject'
 export default {
+  components: {
+    TinymceEditer },
   data() {
     return {
       active: 1,
       loading: false,
       form: {
-        'description': '使用主流的前端框架Vue，使用Es6的开发规范，采用模块化的开发模式',
-        'lessonNum': 12,
-        // 'cover': 'http://edu-longyang.oss-cn-beijing.aliyuncs.com/2020/08/06/587d5686663541d986a750be8c9b99b9java.jpg',
-        'price': 0,
-        'subjectId': '1590631966011592706',
-        'teacherId': '1189389726308478977',
-        'title': '尚硅谷_谷粒学苑-微服务+全栈在线教育实战项目'
+        // description: '使用主流的前端框架Vue',
+        // lessonNum: 12,
+        // cover: 'http://edu-longyang.oss-cn-beijing.aliyuncs.com/2020/08/06/587d5686663541d986a750be8c9b99b9java.jpg',
+        // price: 0,
+        // title: '尚硅谷_谷粒学苑-微服务'
+      },
+      editorOption: {
+        placeholder: '请输入正文'
       },
       teachers: [],
       subjects: [],
@@ -78,12 +85,24 @@ export default {
     }
   },
   created() {
+    this.form.id = this.$route.params && this.$route.params.id
     this.init()
   },
   methods: {
     init() {
       this.getTeacherList()
       this.getSubjectList()
+      const id = this.form.id
+      if (id) {
+        this.getCourseInfoById(id)
+      }
+    },
+    getCourseInfoById(id) {
+      getCourseById(id).then(res => {
+        const { data } = res
+        const info = data.data
+        this.form = Object.assign({}, info, { subjectIds: [info.subjectParentId, info.subjectId] })
+      })
     },
     getTeacherList() {
       getAllTeacherList().then(res => {
@@ -93,11 +112,19 @@ export default {
     },
     handleCoverSuccess(res, file) {
       const { data, message } = res
-      // this.form.cover = data.url
       this.$set(this.form, 'cover', data.url)
       this.$message.success(message)
     },
-    beforeCoverUpload() {
+    beforeCoverUpload(file) {
+      const isImage = ['image/svg+xml', 'image/jpeg', 'image/png'].includes(file.type)
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isImage) {
+        this.$message.error('上传头像图片只能是 jpg,svg,png格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isImage && isLt2M
     },
     getSubjectList() {
       getTreeList().then(res => {
@@ -105,35 +132,65 @@ export default {
         this.subjects = data.list
       })
     },
-
     next() {
       const data = Object.assign({}, this.form)
-      data.subjectId = data.subjectIds.length > 0 && data.subjectIds[1]
+      if (data.subjectIds && data.subjectIds.length > 1) {
+        data.subjectParentId = data.subjectIds[0]
+        data.subjectId = data.subjectIds[1]
+      }
       delete data.subjectIds
+      delete data.id
       this.loading = true
+      if (data.id) {
+        this.update(data)
+      } else {
+        this.add(data)
+      }
+    },
+    add(data) {
       add(data).then(res => {
-        const { data } = res.data
-        if (this.active++ > 2) this.active = 0
         this.$message.success('添加课程信息成功!')
-        this.$router.push({ path: `/course/chapter/${data.id}` })
+        this.doNext(res)
       }).finally(_ => {
         this.loading = false
       })
+    },
+    update(data) {
+      updateCourse(data).then(res => {
+        this.$message.success('修改课程信息成功!')
+        this.doNext(res)
+      }).finally(_ => {
+        this.loading = false
+      })
+    },
+    doNext(res) {
+      const { data } = res.data
+      if (this.active++ > 2) this.active = 0
+      this.$router.push({ path: `/course/chapter/${data.id}` })
     }
   }
 
 }
 </script>
 
-<style lang="css">
-  avatar-uploader .el-upload {
+<style>
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
   }
-  .avatar-uploader .el-upload:hover {
+
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader /deep/ .el-upload:hover {
     border-color: #409EFF;
   }
   .avatar-uploader-icon {
