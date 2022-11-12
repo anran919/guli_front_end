@@ -15,7 +15,7 @@ export function addVideo(data) {
   })
 }
 
-export function deleteVideo(id) {
+export function deleteVideoById(id) {
   return request({
     url: `/service_edu/video/${id}`,
     method: 'DELETE'

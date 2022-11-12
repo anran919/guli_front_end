@@ -20,8 +20,10 @@
               <el-table-column label="VIDEO TITLE" prop="title" />
               <el-table-column label="VIDEO ID" prop="id" />
               <el-table-column label="OPTION">
-                <el-button icon="el-icon-edit" type="text" size="mini" @click="updateVideo(row,1)">编辑</el-button>
-                <el-button icon="el-icon-delete" type="text" size="mini" @click="deleteVideo(row)">删除</el-button>
+                <template slot-scope="children">
+                  <el-button icon="el-icon-edit" type="text" size="mini" @click="doUpdateVideo(row,children.row)">编辑小节</el-button>
+                  <el-button icon="el-icon-delete" type="text" size="mini" @click="deleteVideo(children.row)">删除小节</el-button>
+                </template>
               </el-table-column>
             </el-table>
           </template>
@@ -66,6 +68,12 @@
           <el-form-item label="SORT">
             <el-input-number v-model="video.sort" :min="1" placeholder="sort" />
           </el-form-item>
+          <el-form-item label="IS FREE">
+            <el-radio-group v-model="video.isFree" laceholder="IS FREE">
+              <el-radio :label="0">NO</el-radio>
+              <el-radio :label="1">YES</el-radio>
+            </el-radio-group>
+          </el-form-item>
         </el-form>
         <template slot="footer">
           <el-button size="small" type="primary" @click="onfirmVideo">确认</el-button>
@@ -78,7 +86,7 @@
 
 <script>
 import { getChapterList, addChapter, updateChapter, deleteChapterById } from '@/api/chapter'
-import { addVideo } from '@/api/video'
+import { addVideo, deleteVideoById } from '@/api/video'
 export default {
   data() {
     return {
@@ -101,6 +109,40 @@ export default {
     doAddVideo(row) {
       this.chapter = row
       this.videoVisible = true
+    },
+    doUpdateVideo(chapter, video) {
+      this.chapter = chapter
+      this.video = video
+      this.videoVisible = true
+    },
+    deleteVideo(row) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        debugger
+        const id = row.id
+        return deleteVideoById(id)
+      }).then(_ => {
+        this.fetchChapterList()
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch((response) => { // 失败
+        if (response === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '删除失败'
+          })
+        }
+      })
     },
     videoClose() {
       this.videoVisible = false
@@ -179,7 +221,7 @@ export default {
     },
     next() {
       if (this.active++ > 2) this.active = 0
-      this.$router.push({ path: '/course/publish' })
+      this.$router.push({ path: `/course/publish/${this.courseId}` })
     },
     provious() {
       if (this.active-- > 2) this.active = 0
