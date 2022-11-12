@@ -99,7 +99,7 @@
 import { getPageList, deleteTeacherById, updateTeacher } from '@/api/teacher'
 
 export default {
-  name: 'List',
+  name: 'TeacherList',
   data() {
     const columns = [
       { label: 'name', props: 'name' },

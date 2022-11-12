@@ -8,6 +8,14 @@ export function add(data) {
   })
 }
 
+export function getCoursePageList(params) {
+  return request({
+    url: `/service_edu/course/list`,
+    method: 'GET',
+    params
+  })
+}
+
 export function updateCourse(data) {
   return request({
     url: `/service_edu/course/update`,

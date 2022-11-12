@@ -59,7 +59,7 @@ import { addTeacher, getTeacherById, updateTeacher, uploadAvatar } from '@/api/t
 import ImageCropper from '@/components/ImageCropper'
 import PanThumb from '@/components/PanThumb'
 export default {
-  name: 'Add',
+  name: 'AddTeacher',
   components: { ImageCropper, PanThumb },
   data() {
     return {
