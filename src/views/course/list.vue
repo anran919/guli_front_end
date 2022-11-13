@@ -108,7 +108,7 @@ export default {
       this.search()
     },
     handleUpdate(row) {
-      this.$router.push({ path: '/teacher/edit/' + row.id })
+      this.$router.push({ path: '/course/edit/' + row.id })
     },
     handleDelete(row) {
       const id = row.id

@@ -61,7 +61,7 @@
         </template>
       </el-dialog>
       <el-dialog title="添加小节" :visible.sync="videoVisible" @close="videoClose">
-        <el-form size="small" :model="video" label-position="right" label-width="100px">
+        <el-form size="small" :model="video" label-position="right" label-width="140px">
           <el-form-item label="TITLE">
             <el-input v-model="video.title" placeholder="title" />
           </el-form-item>
@@ -73,6 +73,27 @@
               <el-radio :label="0">NO</el-radio>
               <el-radio :label="1">YES</el-radio>
             </el-radio-group>
+          </el-form-item>
+          <el-form-item label="UPLOAD">
+            <el-upload
+              :on-success="handleVodUploadSuccess"
+              :on-exceed="handleUploadExceed"
+              :on-remove="handlVodeRemove"
+              :before-remove="beforeVodRemove"
+              :file-list="fileList"
+              :action="uploadAction"
+              :limit="1"
+            >
+              <el-button size="small" type="primary">上传视频</el-button>
+              <el-tooltip placement="right-end">
+                <div slot="content">最大支持1G，<br>
+                  支持3GP、ASF、AVI、DAT、DV、FLV、F4V、<br>
+                  GIF、M2T、M4V、MJ2、MJPEG、MKV、MOV、MP4、<br>
+                  MPE、MPG、MPEG、MTS、OGG、QT、RM、RMVB、<br>
+                  SWF、TS、VOB、WMV、WEBM 等视频格式上传</div>
+                <i style="margin-left: 10px" class="el-icon-question" />
+              </el-tooltip>
+            </el-upload>
           </el-form-item>
         </el-form>
         <template slot="footer">
@@ -86,7 +107,7 @@
 
 <script>
 import { getChapterList, addChapter, updateChapter, deleteChapterById } from '@/api/chapter'
-import { addVideo, deleteVideoById } from '@/api/video'
+import { addVideo, deleteVideoById, uploadVideo, deleteAliVideoByVideoId } from '@/api/video'
 export default {
   data() {
     return {
@@ -96,6 +117,8 @@ export default {
       chapter: {},
       video: {},
       chapterVisible: false,
+      fileList: [],
+      uploadAction: uploadVideo,
       videoVisible: false
     }
   },
@@ -106,6 +129,29 @@ export default {
   methods: {
 
     // =========================小节===================================
+
+    handleVodUploadSuccess(response, file, fileList) {
+      const { data } = response
+      if (data.code === '200') {
+        this.video.videoSourceId = data.data.videoId
+        this.video.videoOriginalName = file.name
+      }
+    },
+    handleUploadExceed(files, fileList) {
+      debugger
+    },
+    beforeVodRemove(file) {
+      return this.$confirm(`此操作将永久删除${file.name}, 是否继续`)
+    },
+    handlVodeRemove(file) {
+      const { data } = file.response.data
+      const videoId = data.videoId
+      deleteAliVideoByVideoId(videoId).then(res => {
+        this.$message.success('删除成功!')
+        this.video.videoSourceId = undefined
+        this.video.videoOriginalName = undefined
+      })
+    },
     doAddVideo(row) {
       this.chapter = row
       this.videoVisible = true

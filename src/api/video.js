@@ -37,3 +37,18 @@ export function getVideoById(id) {
   })
 }
 
+/**
+ *
+ * @param {阿里云视频的id} id
+ * @returns 删除promise
+ */
+export function deleteAliVideoByVideoId(id) {
+  return request({
+    url: `/service_vod/video/${id}`,
+    method: 'DELETE'
+  })
+}
+
+// 上传小节视频
+export const uploadVideo = process.env.VUE_APP_BASE_API + '/service_vod/video/upload'
+
