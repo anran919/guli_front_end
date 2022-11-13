@@ -37,7 +37,7 @@
 <script>
 import { uploadFile } from '@/api/subject'
 export default {
-
+  name: 'AddSubject',
   data() {
     return {
       fileList: [],

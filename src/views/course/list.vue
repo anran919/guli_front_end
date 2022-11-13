@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { getCoursePageList } from '@/api/course'
+import { getCoursePageList, deleteCourseById } from '@/api/course'
 
 export default {
   name: 'CourseList',
@@ -111,32 +111,32 @@ export default {
       this.$router.push({ path: '/teacher/edit/' + row.id })
     },
     handleDelete(row) {
-      // const id = row.id
-      // this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      //   return deleteTeacherById(id)
-      // }).then(_ => {
-      //   this.search()
-      //   this.$message({
-      //     type: 'success',
-      //     message: '删除成功!'
-      //   })
-      // }).catch((response) => { // 失败
-      //   if (response === 'cancel') {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   } else {
-      //     this.$message({
-      //       type: 'error',
-      //       message: '删除失败'
-      //     })
-      //   }
-      // })
+      const id = row.id
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return deleteCourseById(id)
+      }).then(_ => {
+        this.search()
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch((response) => { // 失败
+        if (response === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '删除失败'
+          })
+        }
+      })
     },
     onPaginCurrentChange(pageNo) {
       this.page.pageNo = pageNo

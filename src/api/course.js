@@ -41,3 +41,10 @@ export function getcoursePublishById(id) {
   })
 }
 
+export function deleteCourseById(id) {
+  return request({
+    url: `/service_edu/course/${id}`,
+    method: 'DELETE'
+  })
+}
+

@@ -1,56 +1,58 @@
 <template>
   <div class="app-container">
-    <el-form size="small" :model="form" label-width="120px">
-      <el-form-item label="name">
-        <el-input v-model="form.name" clearable placeholder="name" />
-      </el-form-item>
-      <el-form-item label="sort">
-        <el-input-number v-model="form.sort" placeholder="sort" :min="0" />
-      </el-form-item>
-      <el-form-item label="level">
-        <el-select v-model="form.level" clearable placeholder="level">
-          <el-option :value="1" label="高级讲师" />
-          <el-option :value="2" label="首席讲师" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="career">
-        <el-input v-model="form.career" placeholder="career" />
-      </el-form-item>
-      <el-form-item label="intro">
-        <el-input v-model="form.intro" type="textarea" :rows="3" placeholder="intro" />
-      </el-form-item>
-      <el-form-item label="avatar">
-        <!-- 头衔缩略图 -->
-        <pan-thumb :image="form.avatar" />
-        <!-- 文件上传按钮 -->
-        <el-button
-          type="primary"
-          icon="el-icon-upload"
-          @click="avatarCropperVisible=true"
-        >更换头像
-        </el-button>
-        <!--
+    <el-card>
+      <el-form size="small" :model="form" label-width="120px">
+        <el-form-item label="name">
+          <el-input v-model="form.name" clearable placeholder="name" />
+        </el-form-item>
+        <el-form-item label="sort">
+          <el-input-number v-model="form.sort" placeholder="sort" :min="0" />
+        </el-form-item>
+        <el-form-item label="level">
+          <el-select v-model="form.level" clearable placeholder="level">
+            <el-option :value="1" label="高级讲师" />
+            <el-option :value="2" label="首席讲师" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="career">
+          <el-input v-model="form.career" placeholder="career" />
+        </el-form-item>
+        <el-form-item label="intro">
+          <el-input v-model="form.intro" type="textarea" :rows="3" placeholder="intro" />
+        </el-form-item>
+        <el-form-item label="avatar">
+          <!-- 头衔缩略图 -->
+          <pan-thumb :image="form.avatar" />
+          <!-- 文件上传按钮 -->
+          <el-button
+            type="primary"
+            icon="el-icon-upload"
+            @click="avatarCropperVisible=true"
+          >更换头像
+          </el-button>
+          <!--
         v-show：是否显示上传组件
         :key：类似于id，如果一个页面多个图片上传控件，可以做区分
         :url：后台上传的url地址
         @close：关闭上传组件
         @crop-upload-success：上传成功后的回调 -->
-        <!-- :key="imageKey" -->
-        <image-cropper
-          v-show="avatarCropperVisible"
-          :key="imageKey"
-          :width="300"
-          :height="300"
-          field="file"
-          :url="uploadAvatar"
-          @close="close"
-          @crop-upload-success="cropSuccess"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button :loading="confirmLoading" type="primary" @click="confirm">保存</el-button>
-      </el-form-item>
-    </el-form>
+          <!-- :key="imageKey" -->
+          <image-cropper
+            v-show="avatarCropperVisible"
+            :key="imageKey"
+            :width="300"
+            :height="300"
+            field="file"
+            :url="uploadAvatar"
+            @close="close"
+            @crop-upload-success="cropSuccess"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button :loading="confirmLoading" type="primary" @click="confirm">保存</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
   </div>
 </template>
 

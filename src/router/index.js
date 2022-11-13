@@ -91,13 +91,13 @@ export const constantRoutes = [
     children: [
       {
         path: 'list',
-        name: 'list',
+        name: 'subject-list',
         component: () => import('@/views/subject/list'),
         meta: { title: '分类列表', icon: 'tree' }
       },
       {
         path: 'add',
-        name: 'add',
+        name: 'subject-add',
         component: () => import('@/views/subject/add'),
         meta: { title: '添加分类', icon: 'table' }
       }
@@ -112,33 +112,33 @@ export const constantRoutes = [
     children: [
       {
         path: 'list',
-        name: 'list',
+        name: 'course-list',
         component: () => import('@/views/course/list'),
         meta: { title: '课程列表', icon: 'form' }
       },
       {
         path: 'add',
-        name: 'add',
+        name: 'course-add',
         component: () => import('@/views/course/add'),
         meta: { title: '发布课程', icon: 'form', keepAlive: true }
       },
       {
         path: 'edit/:id',
-        name: 'edit',
+        name: 'course-edit',
         component: () => import('@/views/course/add'),
         meta: { title: '编辑课程基本信息', icon: 'form' },
         hidden: true
       },
       {
         path: 'chapter/:id',
-        name: 'chapter',
+        name: 'course-chapter',
         component: () => import('@/views/course/chapter'),
         meta: { title: '编辑课程大纲', icon: 'form' },
         hidden: true
       },
       {
         path: 'publish/:id',
-        name: 'chapter',
+        name: 'course-publish',
         component: () => import('@/views/course/publish'),
         meta: { title: '发布课程', icon: 'form' },
         hidden: true
