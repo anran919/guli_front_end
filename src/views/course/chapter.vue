@@ -129,10 +129,9 @@ export default {
   methods: {
 
     // =========================小节===================================
-
     handleVodUploadSuccess(response, file, fileList) {
       const { data } = response
-      if (data.code === '200') {
+      if (data.data.code === '200') {
         this.video.videoSourceId = data.data.videoId
         this.video.videoOriginalName = file.name
       }
@@ -167,7 +166,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        debugger
         const id = row.id
         return deleteVideoById(id)
       }).then(_ => {

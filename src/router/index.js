@@ -146,6 +146,34 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/banner',
+    component: Layout,
+    redirect: '/banner/list',
+    name: 'banner',
+    meta: { title: '轮播图管理', icon: 'el-icon-magic-stick' },
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/banner/list'),
+        meta: { title: '轮播图列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        name: 'add',
+        component: () => import('@/views/banner/add'),
+        meta: { title: '添加轮播图', icon: 'tree' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        component: () => import('@/views/banner/add'),
+        meta: { title: '修改轮播图', icon: 'tree' },
+        hidden: true
+      }
+    ]
+  },
+  {
     path: '/form',
     component: Layout,
     children: [
